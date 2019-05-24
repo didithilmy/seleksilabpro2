@@ -1,5 +1,5 @@
 /**
- * Login route
+ * Register route
  * This page functions as a login page for user
  *
  * @author Muhammad Aditya Hilmy, NIM 18217025
