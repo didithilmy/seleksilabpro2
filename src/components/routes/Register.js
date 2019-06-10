@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
-const $ = require('jquery');
+import api from "../../api";
 
 export default class Register extends React.Component {
     constructor(props) {
@@ -37,29 +37,31 @@ export default class Register extends React.Component {
                             <CardContent align="left" style={{padding: '32px'}}>
                                 <Typography variant="h5">Register</Typography>
                                 <p>Create an account to use <s>Lamia</s> NIM finder</p>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Username"
-                                    className='textfield'
-                                    margin="normal"
-                                    variant="outlined"
-                                    value={this.state.username}
-                                    onChange={evt => this.update_value('username', evt)}
-                                    fullWidth />
-                                <TextField
-                                    id="outlined-name"
-                                    label="Password"
-                                    className='textfield'
-                                    margin="normal"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={this.state.password}
-                                    onChange={evt => this.update_value('password', evt)}
-                                    type="password" />
-                                <Button variant="outlined" color="primary" style={{marginTop: '16px', width: '100%'}}>
-                                    Register
-                                </Button>
-                                <div style={{marginTop: '16px'}}>Or <NavLink to="/register">sign in</NavLink> if you have an account.</div>
+                                <form onSubmit={(e) => this.submit_registration(e)}>
+                                    <TextField
+                                        id="outlined-name"
+                                        label="Username"
+                                        className='textfield'
+                                        margin="normal"
+                                        variant="outlined"
+                                        value={this.state.username}
+                                        onChange={evt => this.update_value('username', evt)}
+                                        fullWidth />
+                                    <TextField
+                                        id="outlined-name"
+                                        label="Password"
+                                        className='textfield'
+                                        margin="normal"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={this.state.password}
+                                        onChange={evt => this.update_value('password', evt)}
+                                        type="password" />
+                                    <Button variant="outlined" color="primary" style={{marginTop: '16px', width: '100%'}} type='submit'>
+                                        Register
+                                    </Button>
+                                    <div style={{marginTop: '16px'}}>Or <NavLink to="/login">sign in</NavLink> if you have an account.</div>
+                                </form>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -78,8 +80,19 @@ export default class Register extends React.Component {
         );
     }
 
-    submit_registration() {
-
+    submit_registration(e) {
+        api.register(this.state.username, this.state.password).then(() => {
+            console.log("User registered!");
+            this.show_snackbar("You're registered now!");
+            this.setState({
+                username: '',
+                password: ''
+            });
+        }).catch((e) => {
+            console.log("Error: " + e.toString());
+            this.show_snackbar(e.toString());
+        });
+        e.preventDefault();
     }
 
     update_value(key, evt) {
