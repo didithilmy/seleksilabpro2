@@ -1,68 +1,87 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Definitely Not Lamia
+A React app which utilizes Engi's University NIM Finder API.
 
-## Available Scripts
+## Build and Execution
 
-In the project directory, you can run:
+Running this project requires Node JS and NPM.
 
-### `npm start`
+To install all dependencies, run this command:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+$ npm install
+```
+To run the app on development setting, run the following commands:
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```sh
+$ npm run serve
+```
 
-### `npm test`
+To build and deploy the project, run this command:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+$ npm run build
+```
 
-### `npm run build`
+The built files will be on the `/dist` directory. 
+Since it's a single-page application, make sure that all non-static requests go through `index.html` file.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How to Use
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Open the app on your browser. In development setting, try to open `http://localhost:3000`. It will redirect to a login page.
+...
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If you haven't had an account, click on Register to go to the registration page. Once you're there, pick a unique username and a password, and click on Register.
+...
 
-### `npm run eject`
+Upon successful registration, go back to the Login page, type in the credentials you just created, and click on Login. This page will show:
+...
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Type in your search query in the search text field, and press enter or click the search icon next to it. You can also choose to search by name or NIM by selecting the appropriate search type on the dropdown. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The results will be shown on the table below. Move to the next or previous page by clicking the right and left chevron respectively.
+...
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## How it Works
 
-## Learn More
+It's a single-page application, utilizing `react-router` to route the pages in the client side. The root component is `App.js`, and it has three different (stateful) pages--`Login`, `Register`, and `Home`. `App.js` contains imports to all three pages, and declares which pages bind to which route.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Login Page
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Login page handles the login process. It accepts the username and password used to authenticate the client, and sends them to `https://api.stya.net/nim/login` endpoint. Upon successful login, it will receive the `Auth-Token` and persist it in a cookie named `token`. If the login fails, it will show a Snackbar showing the appropriate error message.
 
-### Code Splitting
+### Register Page
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Register page handles the registration process. It accepts the username and password used to create a new account, and sends them to `https://api.stya.net/nim/register` endpoint. Upon successful registration, it will show a Snackbar stating that the registration process is complete. Otherwise, it shows the appropriate error message.
 
-### Analyzing the Bundle Size
+### Home Page
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Home page handles the search query and display of the search results. It takes in a search query and whether the search should be done by name or NIM, and shows the records on a table. It also handles pagination.
 
-### Making a Progressive Web App
+### API client wrapper -- `api.js`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+API client wrapper abstracts the HTTP call to the endpoints. It has the following exported methods:
+1. `register(username: string, password: string)`
+2. `login(username: string, passsword: string)`
+3. `by_name(auth_token: string, query: string, page = 0, count = 10)`
+4. `by_id(auth_token: string, query: string, page = 0, count = 10)`
 
-### Advanced Configuration
+## Libraries
+1. [React](https://github.com/facebook/react)
+2. [Axios](https://github.com/axios/axios)
+3. [material-ui](https://github.com/mui-org/material-ui)
+4. [react-router](https://www.npmjs.com/package/react-router)
+5. [universal-cookie](https://www.npmjs.com/package/universal-cookie)
+6. [qs](https://www.npmjs.com/package/qs)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## API Review
 
-### Deployment
+In short, **it's bad**.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+1. The documentation is inadequate--it doesn't show the exception scenarios.
+2. In `byname` and `byid` endpoints, the error code is inconsistent. It changes every time a new request is made.
+3. The `byname` and `byid` endpoints have pagination, but they don't tell how much the total number of records is, making it impossible to calculate the number of pages it needs.
+4. The `Auth-Token` is identical for the same user in the same UNIX second. It's probably a *digest* of a combination of the username/user ID, current UNIX timestamp in seconds, and probably a salt.
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Author
+Muhammad Aditya Hilmy, NIM 18217025
