@@ -6,7 +6,9 @@
  */
 
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink} from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
@@ -85,7 +87,9 @@ export default class Login extends React.Component {
     login(e) {
         api.login(this.state.username, this.state.password).then((token) => {
             this.show_snackbar("Logged in!");
-            console.log("Token: " + token);
+            const cookies = new Cookies();
+            cookies.set('token', token, { path: '/' });
+            this.props.history.push('/');
         }).catch((e) => {
             console.log("Error: " + e.toString());
             this.show_snackbar(e.toString());

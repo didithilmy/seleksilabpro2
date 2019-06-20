@@ -4,7 +4,9 @@ const BASE_URL = "https://api.stya.net";
 
 export default {
     register,
-    login
+    login,
+    by_id,
+    by_name
 };
 
 /**
@@ -56,7 +58,7 @@ export async function by_name(auth_token, query, page = 0, count = 10) {
 
     let data = response.data;
 
-    if(data.code !== 2) throw data.status;
+    if(data.status !== 'OK') throw data.status;
     else return data.payload;
 }
 
@@ -73,7 +75,7 @@ export async function by_id(auth_token, query, page = 0, count = 10) {
 
     let data = response.data;
 
-    if(data.code !== 2) throw data.status;
+    if(data.status !== 'OK') throw data.status;
     else return data.payload;
 }
 
@@ -100,5 +102,7 @@ async function get_request(url, params, headers) {
         }
     };
 
-    return await axios.get(url, payload, options);
+    console.log(options);
+
+    return await axios.get(url + "?" + payload, options);
 }
