@@ -1,6 +1,8 @@
 # Definitely Not Lamia
 A React app which utilizes Engi's University NIM Finder API.
 
+Demo URL: [https://notlamia.didithilmy.com](https://notlamia.didithilmy.com)
+
 ## Build and Execution
 
 Running this project requires Node JS and NPM.
@@ -28,18 +30,18 @@ Since it's a single-page application, make sure that all non-static requests go 
 ## How to Use
 
 Open the app on your browser. In development setting, try to open `http://localhost:3000`. It will redirect to a login page.
-...
+![](screenshots/ss1.png)
 
 If you haven't had an account, click on Register to go to the registration page. Once you're there, pick a unique username and a password, and click on Register.
-...
+![](screenshots/ss2.png)
 
 Upon successful registration, go back to the Login page, type in the credentials you just created, and click on Login. This page will show:
-...
+![](screenshots/ss3.png)
 
 Type in your search query in the search text field, and press enter or click the search icon next to it. You can also choose to search by name or NIM by selecting the appropriate search type on the dropdown. 
 
 The results will be shown on the table below. Move to the next or previous page by clicking the right and left chevron respectively.
-...
+![](screenshots/ss4.png)
 
 
 ## How it Works
