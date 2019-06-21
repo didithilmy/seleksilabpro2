@@ -85,5 +85,5 @@ In short, **it's bad**.
 3. The `byname` and `byid` endpoints have pagination, but they don't tell how much the total number of records is, making it impossible to calculate the number of pages it needs.
 4. The `Auth-Token` is identical for the same user in the same UNIX second. It's probably a *digest* of a combination of the username/user ID, current UNIX timestamp in seconds, and probably a salt.
 
-### Author
+## Author
 Muhammad Aditya Hilmy, NIM 18217025
